@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}داشبورد - سامانه مدیریت انبار{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h1>داشبورد</h1>
+        <p class="subtitle">خوش‌آمدید، {{ first_name }} {{ last_name }}</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- کارت‌های اطلاعات -->
+        <div class="card stats-card">
+            <div class="card-header">پرسنل فعال</div>
+            <div class="card-value">0</div>
+            <div class="card-footer">کل پرسنل</div>
+        </div>
+
+        <div class="card stats-card">
+            <div class="card-header">محموله‌های موجود</div>
+            <div class="card-value">0</div>
+            <div class="card-footer">کل محموله‌ها</div>
+        </div>
+
+        <div class="card stats-card">
+            <div class="card-header">مطالبات معوق</div>
+            <div class="card-value">0</div>
+            <div class="card-footer">نیاز به بررسی</div>
+        </div>
+
+        <div class="card stats-card">
+            <div class="card-header">اسناد پروسس‌نشده</div>
+            <div class="card-value">0</div>
+            <div class="card-footer">منتظر تأیید</div>
+        </div>
+    </div>
+
+    <!-- بخش اعلان‌ها -->
+    <div class="card">
+        <div class="card-header">
+            <h3>اعلان‌های سیستم</h3>
+        </div>
+        <div class="card-body">
+            <div id="notifications-container">
+                <p class="text-muted">هیچ اعلانی در حال حاضر نیست</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- سریع‌رفتارها -->
+    <div class="card">
+        <div class="card-header">
+            <h3>سریع‌رفتارها</h3>
+        </div>
+        <div class="card-body quick-actions">
+            <a href="#" class="action-btn">
+                <span class="icon">📝</span>
+                <span>رسید جدید</span>
+            </a>
+            <a href="#" class="action-btn">
+                <span class="icon">📤</span>
+                <span>حواله جدید</span>
+            </a>
+            <a href="#" class="action-btn">
+                <span class="icon">👤</span>
+                <span>پرسنل جدید</span>
+            </a>
+            <a href="#" class="action-btn">
+                <span class="icon">⚙️</span>
+                <span>تنظیمات</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // بارگذاری داشبورد
+    document.addEventListener('DOMContentLoaded', async function() {
+        await loadDashboardData();
+    });
+    
+    async function loadDashboardData() {
+        try {
+            const authResponse = await api.checkAuth();
+            
+            if (!authResponse.is_authenticated) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            // بارگذاری اطلاعات داشبورد
+            console.log('Dashboard loaded');
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+        }
+    }
+</script>
+{% endblock %}

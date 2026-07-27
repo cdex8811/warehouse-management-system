@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}ورود - سامانه مدیریت انبار{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h2>سامانه مدیریت انبار</h2>
+            <p>جیره‌های تخصصی</p>
+        </div>
+
+        <form id="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">نام کاربری</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="form-control" 
+                    placeholder="نام کاربری خود را وارد کنید"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">رمز عبور</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="form-control" 
+                    placeholder="رمز عبور خود را وارد کنید"
+                    required
+                >
+            </div>
+
+            <div id="error-message" class="alert alert-error" style="display: none;"></div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+                ورود به سیستم
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <small>برای ورود به سیستم نام کاربری و رمز عبور خود را وارد کنید</small>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function handleLogin(event) {
+        event.preventDefault();
+        
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const errorDiv = document.getElementById('error-message');
+        
+        // ریست پیغام خطا
+        errorDiv.style.display = 'none';
+        
+        // اعتبارسنجی
+        if (!username || !password) {
+            showError('تمام فیلدها الزامی هستند');
+            return;
+        }
+        
+        try {
+            const response = await api.login(username, password);
+            
+            if (response.status === 'success') {
+                // ذخیره اطلاعات کاربر
+                localStorage.setItem('user', JSON.stringify(response.user));
+                
+                // انتقال به داشبورد
+                window.location.href = '/dashboard';
+            } else {
+                showError(response.message || 'ورود ناموفق بود');
+            }
+        } catch (error) {
+            showError('خطا در برقراری ارتباط با سرور');
+            console.error('Login error:', error);
+        }
+    }
+    
+    function showError(message) {
+        const errorDiv = document.getElementById('error-message');
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+    }
+</script>
+{% endblock %}

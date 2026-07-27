@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}سامانه مدیریت انبار{% endblock %}</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    {% if current_user %}
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <h1>{{ app_name }}</h1>
+            </div>
+            <div class="navbar-menu">
+                <a href="/dashboard" class="nav-link">داشبورد</a>
+                <a href="#" class="nav-link">پرسنل</a>
+                <a href="#" class="nav-link">اسناد</a>
+                <a href="#" class="nav-link">گزارش‌ها</a>
+                <a href="#" class="nav-link">تنظیمات</a>
+            </div>
+            <div class="navbar-user">
+                <span class="user-info">
+                    <strong id="user-name">{{ first_name }}</strong>
+                    <small id="user-role">{{ user_role }}</small>
+                </span>
+                <button onclick="logout()" class="btn btn-logout">خروج</button>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 سامانه مدیریت انبار | نسخه {{ app_version }}</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
